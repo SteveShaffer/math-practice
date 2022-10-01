@@ -18,3 +18,9 @@ python3 -m http.server
 
 - Show upcoming problems
 - Center everything
+- Favicon
+- Other operators
+- Controls for number ranges to include
+- Ability to practice a specific operand (e.g. 3 times tables but 3 as either the first or second digit)
+- Branding
+- Memorable domain
