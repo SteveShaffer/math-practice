@@ -13,3 +13,8 @@ Just host the files on a basic HTTP server. If you need something simple locally
 ```bash
 python3 -m http.server
 ```
+
+## TODO
+
+- Show upcoming problems
+- Center everything

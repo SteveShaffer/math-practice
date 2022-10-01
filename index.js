@@ -1,10 +1,10 @@
 const answerEl = document.getElementById('answer');
 const bodyEl = document.body;
-const counterEl = document.getElementById('counter');
+const counterEl = document.getElementById('countCorrect');
 const problemEl = document.getElementById('problem');
 const responseEl = document.getElementById('response');
 
-const delay = 200;  // ms
+const delay = 300;  // ms
 const responses = {
     blank: {
         color: 'white',
@@ -27,7 +27,9 @@ const responses = {
 let correctAnswerText = '';
 let countCorrect = 0;
 
+answerEl.focus();
 initProblem();
+renderCounter();
 
 answerEl.addEventListener('input', answerUpdated);
 
@@ -70,11 +72,15 @@ function initProblem() {
 
 function logCorrect() {
     countCorrect++;
-    counterEl.innerHTML = countCorrect;
+    renderCounter();
 }
 
 function randomDigit() {
     return Math.floor(Math.random() * 10);
+}
+
+function renderCounter() {
+    counterEl.innerHTML = countCorrect;
 }
 
 function setAnswer(answerText) {
