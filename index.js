@@ -45,13 +45,13 @@ function initProblem() {
     const problemText = `${firstNum} x ${secondNum}`;
     correctAnswerText = `${firstNum * secondNum}`;
 
-    problemEl.setHTML(problemText);
+    problemEl.innerHTML = problemText;
     setAnswer(null);
 }
 
 function logCorrect() {
     countCorrect++;
-    counterEl.setHTML(countCorrect);
+    counterEl.innerHTML = countCorrect;
 }
 
 function randomDigit() {
@@ -65,7 +65,7 @@ function setAnswer(answerText) {
 }
 
 function setResponse(responseText, isTemporary){
-    responseEl.setHTML(responseText);
+    responseEl.innerHTML = responseText;
     try {
         if (responseText.length > 0 && isTemporary) {
             setTimeout(() => setResponse(''), delay * 2);
