@@ -33,6 +33,7 @@ let countCorrect = 0;
 bodyEl.style.backgroundColor = backgroundColor;
 answerEl.focus();
 initProblem();
+// TODO: Make an optional feature (and mark experimental?)
 initSpeechRecognition();
 renderCounter();
 
