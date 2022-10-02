@@ -33,6 +33,7 @@ let countCorrect = 0;
 bodyEl.style.backgroundColor = backgroundColor;
 answerEl.focus();
 initProblem();
+initSpeechRecognition();
 renderCounter();
 
 answerEl.addEventListener('input', answerUpdated);
@@ -72,6 +73,41 @@ function initProblem() {
 
     problemEl.innerHTML = problemText;
     setAnswer(null);
+}
+
+function initSpeechRecognition() {
+    var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition;
+    var SpeechGrammarList = SpeechGrammarList || window.webkitSpeechGrammarList;
+    var SpeechRecognitionEvent = SpeechRecognitionEvent || webkitSpeechRecognitionEvent;
+
+    // TODO: There's a slicker way to write this
+    const numbers = [];
+    for (let i=0; i<100; i++) {
+        numbers.push(`${i}`);
+    }
+    
+    const recognition = new SpeechRecognition();
+
+    // TODO: Why isn't the grammar list working?
+    if (SpeechGrammarList) {
+        // SpeechGrammarList is not currently available in Safari, and does not have any effect in any other browser.
+        // This code is provided as a demonstration of possible capability. You may choose not to use it.
+        var speechRecognitionList = new SpeechGrammarList();
+        var grammar = '#JSGF V1.0; grammar numbers; public <number> = ' + numbers.join(' | ') + ' ;'
+        speechRecognitionList.addFromString(grammar, 1);
+        recognition.grammars = speechRecognitionList;
+    }
+    recognition.continuous = true;
+    recognition.lang = 'en-US';
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+    recognition.onresult = event => {
+        // TODO: Adding it directly in causes issues when the result is partially correct (due to the backspacing logic used for text inputs)
+        answerEl.value = event.results[event.results.length - 1][0].transcript.trim();
+        answerUpdated();
+    }
+
+    recognition.start();
 }
 
 function logCorrect() {

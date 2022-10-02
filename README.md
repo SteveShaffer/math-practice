@@ -16,6 +16,7 @@ python3 -m http.server
 
 ## TODO
 
+- Spoken input
 - Show upcoming problems
 - Use rems (or whatever) instead of px
 - Favicon
