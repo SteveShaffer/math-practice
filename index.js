@@ -1,17 +1,19 @@
 const answerEl = document.getElementById('answer');
 const bodyEl = document.body;
 const counterEl = document.getElementById('countCorrect');
+const mainEl = document.getElementById('main');
 const problemEl = document.getElementById('problem');
 const responseEl = document.getElementById('response');
 
 const delay = 300;  // ms
+const backgroundColor = Math.floor(Math.random()*16777215).toString(16);  // Random color
 const responses = {
     blank: {
-        color: 'white',
         text: ''
     },
     correct: {
         color: 'green',
+        isTemporary: true,
         text: 'YAY!'
     },
     keepGoing: {
@@ -20,6 +22,7 @@ const responses = {
     },
     wrong: {
         color: 'yellow',
+        isTemporary: true,
         text: 'Nope'
     }
 };
@@ -27,6 +30,7 @@ const responses = {
 let correctAnswerText = '';
 let countCorrect = 0;
 
+bodyEl.style.backgroundColor = backgroundColor;
 answerEl.focus();
 initProblem();
 renderCounter();
@@ -36,7 +40,7 @@ answerEl.addEventListener('input', answerUpdated);
 function answerUpdated(e) {
     const enteredAnswer = answerEl.value;
     if (correctAnswerText === enteredAnswer) {
-        setResponse(responses.correct, true);
+        setResponse(responses.correct);
         logCorrect();
         setTimeout(() => initProblem(), delay);
     }
@@ -44,7 +48,7 @@ function answerUpdated(e) {
         setResponse(responses.keepGoing);
     }
     else {
-        setResponse(responses.wrong, true);
+        setResponse(responses.wrong);
         // TODO: This is not graceful?
         for (let i = enteredAnswer.length; i>0; i--) {
             const partialAnswer = enteredAnswer.substring(0,i);
@@ -89,11 +93,11 @@ function setAnswer(answerText) {
     }, delay);
 }
 
-function setResponse(response, isTemporary){
+function setResponse(response) {
     responseEl.innerHTML = response.text;
-    bodyEl.style.backgroundColor = response.color;
+    mainEl.style.backgroundColor = response.color || null;
     try {
-        if (response.text.length > 0 && isTemporary) {
+        if (response.text.length > 0 && response.isTemporary) {
             setTimeout(() => setResponse(responses.blank), delay * 2);
         }
     } catch {

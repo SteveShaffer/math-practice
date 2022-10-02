@@ -17,7 +17,7 @@ python3 -m http.server
 ## TODO
 
 - Show upcoming problems
-- Center everything
+- Use rems (or whatever) instead of px
 - Favicon
 - Other operators
 - Controls for number ranges to include
