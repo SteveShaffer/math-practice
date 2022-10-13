@@ -4,6 +4,7 @@ const counterEl = document.getElementById('countCorrect');
 const mainEl = document.getElementById('main');
 const problemEl = document.getElementById('problem');
 const responseEl = document.getElementById('response');
+const timerEl = document.getElementById('timer');
 
 const delay = 300;  // ms
 const backgroundColor = Math.floor(Math.random()*16777215).toString(16);  // Random color
@@ -29,11 +30,13 @@ const responses = {
 
 let correctAnswerText = '';
 let countCorrect = 0;
+let startTime;
 
 bodyEl.style.backgroundColor = backgroundColor;
 answerEl.focus();
 initProblem();
 renderCounter();
+startTimer();
 
 answerEl.addEventListener('input', answerUpdated);
 
@@ -103,4 +106,11 @@ function setResponse(response) {
     } catch {
         // Do nothing
     }
+}
+
+function startTimer() {
+    startTime = new Date();
+    setInterval(() => {
+        timerEl.innerHTML = (new Date() - startTime) / 1000 + ' seconds';
+    }, 100);
 }
