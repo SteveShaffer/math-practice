@@ -16,6 +16,7 @@ python3 -m http.server
 
 ## TODO
 
+- Add pause/reset buttons for timer
 - Show upcoming problems
 - Use rems (or whatever) instead of px
 - Favicon
