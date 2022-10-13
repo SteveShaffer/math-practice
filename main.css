@@ -1,8 +1,12 @@
 body {
     font-family: sans-serif;
+    background-image: url(earth.jpg);
+    background-size: cover;
+    background-position: center;
 }
 
 #problem {
+    color: white;
     font-size: 80px;
 }
 
