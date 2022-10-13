@@ -111,6 +111,12 @@ function setResponse(response) {
 function startTimer() {
     startTime = new Date();
     setInterval(() => {
-        timerEl.innerHTML = Number.floor( (new Date() - startTime) / 1000) + ' seconds';
+        let seconds = Math.floor( (new Date() - startTime) / 1000);
+        let minutes = Math.floor(seconds / 60);
+        seconds = seconds - minutes * 60;
+        let hours = Math.floor(minutes / 60);
+        minutes = minutes - hours * 60;
+        // TODO: Ensure double-digit segments
+        timerEl.innerHTML = `${hours || '00'}:${minutes || '00'}:${seconds || '00'}`;
     }, 1000);
 }
