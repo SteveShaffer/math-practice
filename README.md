@@ -25,3 +25,9 @@ python3 -m http.server
 - Ability to practice a specific operand (e.g. 3 times tables but 3 as either the first or second digit)
 - Branding
 - Memorable domain
+- Graphs!
+- Leaderboards!
+
+## Bugs
+
+- You can type math operators like +/- in the answer box
