@@ -111,6 +111,6 @@ function setResponse(response) {
 function startTimer() {
     startTime = new Date();
     setInterval(() => {
-        timerEl.innerHTML = (new Date() - startTime) / 1000 + ' seconds';
-    }, 100);
+        timerEl.innerHTML = Number.floor( (new Date() - startTime) / 1000) + ' seconds';
+    }, 1000);
 }
