@@ -20,6 +20,10 @@ body {
     flex-direction: column;
 }
 
+.clock {
+    font-family: monospace;
+}
+
 .counter {
     font-size: 40px;
 }

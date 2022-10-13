@@ -116,7 +116,17 @@ function startTimer() {
         seconds = seconds - minutes * 60;
         let hours = Math.floor(minutes / 60);
         minutes = minutes - hours * 60;
-        // TODO: Ensure double-digit segments
-        timerEl.innerHTML = `${hours || '00'}:${minutes || '00'}:${seconds || '00'}`;
+        timerEl.innerHTML = `${zeroPad(hours)}:${zeroPad(minutes)}:${zeroPad(seconds)}`;
     }, 1000);
+}
+
+/**
+ * Pads a number with a leading zero if it isn't already 2 digits
+ * Intended to be used for padding the segments of a HH:MM:SS time clock.
+ */
+function zeroPad(number) {
+    if(`${number}`.length === 1) {
+        return `0${number}`;
+    }
+    return `${number}`;
 }
