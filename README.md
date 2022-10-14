@@ -27,6 +27,7 @@ python3 -m http.server
 - Memorable domain
 - Graphs!
 - Leaderboards!
+- Show live "pace" of correct answers over time
 
 ## Bugs
 

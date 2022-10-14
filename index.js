@@ -5,6 +5,7 @@ const mainEl = document.getElementById('main');
 const problemEl = document.getElementById('problem');
 const responseEl = document.getElementById('response');
 const timerEl = document.getElementById('timer');
+const timerStartStopEl = document.getElementById('timerStartStop');
 
 const delay = 300;  // ms
 const backgroundColor = Math.floor(Math.random()*16777215).toString(16);  // Random color
@@ -27,18 +28,38 @@ const responses = {
         text: 'Nope'
     }
 };
+const timerStates = {
+    0: { // Init
+        text: 'Start',
+        color: 'lightgreen',
+        handler: startTimer
+    },
+    1: { // Running
+        text: 'Stop',
+        color: 'indianred',
+        handler: stopTimer
+    },
+    2: { // Stopped
+        text: 'Reset',
+        color: 'white',
+        handler: resetTimer
+    }
+};
 
 let correctAnswerText = '';
 let countCorrect = 0;
 let startTime;
+let timerState;  // 0 = Ready to start, 1 = Running, 2 = Stopped
+let timerIntervalId;
 
 bodyEl.style.backgroundColor = backgroundColor;
 answerEl.focus();
 initProblem();
 renderCounter();
-startTimer();
+resetTimer();
 
 answerEl.addEventListener('input', answerUpdated);
+timerStartStopEl.addEventListener('click', timerStartStopClicked);
 
 function answerUpdated(e) {
     const enteredAnswer = answerEl.value;
@@ -90,6 +111,28 @@ function renderCounter() {
     counterEl.innerHTML = countCorrect;
 }
 
+function renderTimer() {
+    let seconds = Math.floor((new Date() - startTime) / 1000);
+    let minutes = Math.floor(seconds / 60);
+    seconds = seconds - minutes * 60;
+    let hours = Math.floor(minutes / 60);
+    minutes = minutes - hours * 60;
+    timerEl.innerHTML = `${zeroPad(hours)}:${zeroPad(minutes)}:${zeroPad(seconds)}`;
+}
+
+function renderTimerStartStop() {
+    const state = timerStates[timerState];
+    timerStartStopEl.innerHTML = state.text;
+    timerStartStopEl.style.backgroundColor = state.color;
+}
+
+function resetTimer() {
+    stopTimer();
+    timerEl.innerHTML = '00:00:00';
+    timerState = 0;
+    renderTimerStartStop();
+}
+
 function setAnswer(answerText) {
     setTimeout(() => {
         answerEl.value = answerText;
@@ -110,14 +153,20 @@ function setResponse(response) {
 
 function startTimer() {
     startTime = new Date();
-    setInterval(() => {
-        let seconds = Math.floor( (new Date() - startTime) / 1000);
-        let minutes = Math.floor(seconds / 60);
-        seconds = seconds - minutes * 60;
-        let hours = Math.floor(minutes / 60);
-        minutes = minutes - hours * 60;
-        timerEl.innerHTML = `${zeroPad(hours)}:${zeroPad(minutes)}:${zeroPad(seconds)}`;
-    }, 1000);
+    timerIntervalId = setInterval(renderTimer, 1000);
+    timerState = 1;
+    renderTimerStartStop();
+}
+
+function stopTimer() {
+    startTime = undefined;
+    timerIntervalId && clearInterval(timerIntervalId);
+    timerState = 2;
+    renderTimerStartStop();
+}
+
+function timerStartStopClicked() {
+    timerStates[timerState].handler();
 }
 
 /**
