@@ -16,8 +16,6 @@ python3 -m http.server
 
 ## TODO
 
-- Spoken input
-- Add pause/reset buttons for timer
 - Show upcoming problems
 - Use rems (or whatever) instead of px
 - Favicon
