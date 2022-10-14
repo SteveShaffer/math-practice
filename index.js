@@ -41,7 +41,7 @@ const timerStates = {
     },
     2: { // Stopped
         text: 'Reset',
-        color: 'white',
+        color: 'lightgray',
         handler: resetTimer
     }
 };
