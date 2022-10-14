@@ -1,12 +1,15 @@
+// UI References
 const answerEl = document.getElementById('answer');
 const bodyEl = document.body;
 const counterEl = document.getElementById('countCorrect');
 const mainEl = document.getElementById('main');
 const problemEl = document.getElementById('problem');
 const responseEl = document.getElementById('response');
+const speechStartStopEl = document.getElementById('speechStartStop');
 const timerEl = document.getElementById('timer');
 const timerStartStopEl = document.getElementById('timerStartStop');
 
+// Constants
 const delay = 300;  // ms
 const backgroundColor = Math.floor(Math.random()*16777215).toString(16);  // Random color
 const responses = {
@@ -46,23 +49,27 @@ const timerStates = {
     }
 };
 
+// Globals
 let correctAnswerText = '';
 let countCorrect = 0;
+let speechRecognizer;
 let startTime;
 let timerState;  // 0 = Ready to start, 1 = Running, 2 = Stopped
 let timerIntervalId;
 
+// Init
 bodyEl.style.backgroundColor = backgroundColor;
 answerEl.focus();
 initProblem();
-// TODO: Make an optional feature (and mark experimental?)
-initSpeechRecognition();
 renderCounter();
 resetTimer();
 
+// Listeners
 answerEl.addEventListener('input', answerUpdated);
+speechStartStopEl.addEventListener('click', speechStartStopClicked);
 timerStartStopEl.addEventListener('click', timerStartStopClicked);
 
+// Functions
 function answerUpdated(e) {
     const enteredAnswer = answerEl.value;
     if (correctAnswerText === enteredAnswer) {
@@ -98,41 +105,6 @@ function initProblem() {
 
     problemEl.innerHTML = problemText;
     setAnswer(null);
-}
-
-function initSpeechRecognition() {
-    var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition;
-    var SpeechGrammarList = SpeechGrammarList || window.webkitSpeechGrammarList;
-    var SpeechRecognitionEvent = SpeechRecognitionEvent || webkitSpeechRecognitionEvent;
-
-    // TODO: There's a slicker way to write this
-    const numbers = [];
-    for (let i=0; i<100; i++) {
-        numbers.push(`${i}`);
-    }
-    
-    const recognition = new SpeechRecognition();
-
-    // TODO: Why isn't the grammar list working?
-    if (SpeechGrammarList) {
-        // SpeechGrammarList is not currently available in Safari, and does not have any effect in any other browser.
-        // This code is provided as a demonstration of possible capability. You may choose not to use it.
-        var speechRecognitionList = new SpeechGrammarList();
-        var grammar = '#JSGF V1.0; grammar numbers; public <number> = ' + numbers.join(' | ') + ' ;'
-        speechRecognitionList.addFromString(grammar, 1);
-        recognition.grammars = speechRecognitionList;
-    }
-    recognition.continuous = true;
-    recognition.lang = 'en-US';
-    recognition.interimResults = false;
-    recognition.maxAlternatives = 1;
-    recognition.onresult = event => {
-        // TODO: Adding it directly in causes issues when the result is partially correct (due to the backspacing logic used for text inputs)
-        answerEl.value = event.results[event.results.length - 1][0].transcript.trim();
-        answerUpdated();
-    }
-
-    recognition.start();
 }
 
 function logCorrect() {
@@ -188,11 +160,61 @@ function setResponse(response) {
     }
 }
 
+function speechStartStopClicked() {
+    if (speechRecognizer) {
+        stopSpeechRecognition();
+    } else {
+        startSpeechRecognition();
+    }
+}
+
+function startSpeechRecognition() {
+    var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition;
+    var SpeechGrammarList = SpeechGrammarList || window.webkitSpeechGrammarList;
+    var SpeechRecognitionEvent = SpeechRecognitionEvent || webkitSpeechRecognitionEvent;
+
+    // TODO: There's a slicker way to write this
+    const numbers = [];
+    for (let i=0; i<100; i++) {
+        numbers.push(`${i}`);
+    }
+    
+    speechRecognizer = new SpeechRecognition();
+
+    // TODO: Why isn't the grammar list working?
+    if (SpeechGrammarList) {
+        // SpeechGrammarList is not currently available in Safari, and does not have any effect in any other browser.
+        // This code is provided as a demonstration of possible capability. You may choose not to use it.
+        var speechRecognitionList = new SpeechGrammarList();
+        var grammar = '#JSGF V1.0; grammar numbers; public <number> = ' + numbers.join(' | ') + ' ;'
+        speechRecognitionList.addFromString(grammar, 1);
+        speechRecognizer.grammars = speechRecognitionList;
+    }
+    speechRecognizer.continuous = true;
+    speechRecognizer.lang = 'en-US';
+    speechRecognizer.interimResults = false;
+    speechRecognizer.maxAlternatives = 1;
+    speechRecognizer.onresult = event => {
+        // TODO: Adding it directly in causes issues when the result is partially correct (due to the backspacing logic used for text inputs)
+        answerEl.value = event.results[event.results.length - 1][0].transcript.trim();
+        answerUpdated();
+    }
+
+    speechRecognizer.start();
+    speechStartStopEl.style.backgroundColor = 'goldenrod';
+}
+
 function startTimer() {
     startTime = new Date();
     timerIntervalId = setInterval(renderTimer, 1000);
     timerState = 1;
     renderTimerStartStop();
+}
+
+function stopSpeechRecognition() {
+    speechRecognizer.stop();
+    speechRecognizer = undefined;
+    speechStartStopEl.style.backgroundColor = 'lightgray';
 }
 
 function stopTimer() {

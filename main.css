@@ -32,6 +32,10 @@ body {
     min-width: 160px;
 }
 
+button {
+    font-size: 40px;
+}
+
 .clock {
     font-family: monospace;
 }
