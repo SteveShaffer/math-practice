@@ -1,5 +1,9 @@
 body {
     font-family: sans-serif;
+    background-image: url(earth.jpg);
+    background-size: cover;
+    background-position: center;
+    background-blend-mode: luminosity;
 }
 
 #problem {
@@ -16,6 +20,22 @@ body {
     flex-direction: column;
 }
 
+#timer {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-right: 0;
+}
+
+#timerStartStop {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    min-width: 160px;
+}
+
+.clock {
+    font-family: monospace;
+}
+
 .counter {
     font-size: 40px;
 }
@@ -23,5 +43,12 @@ body {
 .row {
     display: flex;
     justify-content: center;
-    margin: 20px;
+    margin: 10px;
+}
+
+.text {
+    background-color: #eee;
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: 4px solid black;
 }

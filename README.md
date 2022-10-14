@@ -17,6 +17,7 @@ python3 -m http.server
 ## TODO
 
 - Spoken input
+- Add pause/reset buttons for timer
 - Show upcoming problems
 - Use rems (or whatever) instead of px
 - Favicon
@@ -25,3 +26,10 @@ python3 -m http.server
 - Ability to practice a specific operand (e.g. 3 times tables but 3 as either the first or second digit)
 - Branding
 - Memorable domain
+- Graphs!
+- Leaderboards!
+- Show live "pace" of correct answers over time
+
+## Bugs
+
+- You can type math operators like +/- in the answer box
