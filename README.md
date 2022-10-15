@@ -31,3 +31,4 @@ python3 -m http.server
 ## Bugs
 
 - You can type math operators like +/- in the answer box
+- Speech recognition works differently in Chrome for Android. It stops spitting out new results after the first result and has to be restarted.
